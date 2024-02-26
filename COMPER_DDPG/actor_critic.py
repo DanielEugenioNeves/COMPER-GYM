@@ -101,7 +101,8 @@ class Critic(BaseActorCritic):
     
     
     def create(self,num_states,num_actions):
-        # State as input                 
+        # State as input
+        last_init = tf.random_uniform_initializer(minval=-0.0003, maxval=0.0003)                      
         state_input = layers.Input(shape=(num_states),name="critic_st_input")
         state_out = layers.BatchNormalization()(state_input)
         state_out = layers.Dense(400, activation="relu",name="critic_st_dense1")(state_input)
@@ -109,7 +110,7 @@ class Critic(BaseActorCritic):
         state_out = layers.Dense(300, activation="relu",name="critic_st_dense2")(state_out)
 
         # Action as input
-        action_input = layers.Input(shape=(num_actions),name="critic_act_input")       
+        action_input = layers.Input(shape=(num_actions),kernel_initializer=last_init,name="critic_act_input")       
 
         # Both are passed through seperate layer before concatenating
         concat = layers.Concatenate()([state_out, action_input])       
