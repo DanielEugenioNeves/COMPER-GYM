@@ -110,11 +110,11 @@ class Critic(BaseActorCritic):
         state_out = layers.Dense(300, activation="relu",name="critic_st_dense2")(state_out)
 
         # Action as input
-        action_input = layers.Input(shape=(num_actions),kernel_initializer=last_init,name="critic_act_input")       
+        action_input = layers.Input(shape=(num_actions),name="critic_act_input")       
 
         # Both are passed through seperate layer before concatenating
         concat = layers.Concatenate()([state_out, action_input])       
-        outputs = layers.Dense(1,name="critic_output")(concat)
+        outputs = layers.Dense(1,kernel_initializer=last_init,name="critic_output")(concat)
         # Outputs single value for give state-action
         self.model = tf.keras.Model([state_input, action_input], outputs)
 
